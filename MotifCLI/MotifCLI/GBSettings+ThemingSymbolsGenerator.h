@@ -15,6 +15,7 @@ extern NSString * const MTFSettingsOptionTabs;
 extern NSString * const MTFSettingsOptionIndentationCount;
 extern NSString * const MTFSettingsOptionHelp;
 extern NSString * const MTFSettingsOptionVerbose;
+extern NSString * const MTFSettingsOptionModification;
 
 @interface GBSettings (ThemingSymbolsGenerator)
 
@@ -35,6 +36,8 @@ extern NSString * const MTFSettingsOptionVerbose;
 @property (nonatomic, setter=mtf_setHelp:) BOOL mtf_help;
 
 @property (nonatomic, setter=mtf_setVerbose:) BOOL mtf_verbose;
+
+@property (nonatomic, setter=mtf_setCheckForModification:) BOOL mtf_checkForModification;
 
 #pragma mark - Derived Properties
 

@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, SymbolType) {
 
 #pragma mark - Public
 
-- (void)generateSymbolsFilesInDirectory:(NSURL *)directoryURL indentation:(NSString *)indentation prefix:(NSString *)prefix; {
+- (void)generateSymbolsFilesInDirectory:(NSURL *)directoryURL indentation:(NSString *)indentation prefix:(NSString *)prefix checkForModification:(BOOL)checkForModification; {
     NSParameterAssert(directoryURL);
     NSParameterAssert(indentation);
     NSParameterAssert(prefix);
@@ -37,15 +37,17 @@ typedef NS_ENUM(NSInteger, SymbolType) {
         generateSymbolsFileOfType:FileTypeHeader
         intoDirectoryWithURL:directoryURL
         indentation:indentation
-        prefix:prefix];
+        prefix:prefix
+        checkForModification:checkForModification];
     [self
         generateSymbolsFileOfType:FileTypeImplementation
         intoDirectoryWithURL:directoryURL
         indentation:indentation
-        prefix:prefix];
+        prefix:prefix
+        checkForModification:checkForModification];
 }
 
-+ (void)generateSymbolsUmbrellaHeaderFromThemes:(NSArray *)themes inDirectory:(NSURL *)directoryURL prefix:(NSString *)prefix; {
++ (void)generateSymbolsUmbrellaHeaderFromThemes:(NSArray *)themes inDirectory:(NSURL *)directoryURL prefix:(NSString *)prefix checkForModification:(BOOL)checkForModification; {
     NSParameterAssert(themes);
     NSAssert(themes.count > 0, @"Must supply at least one theme");
     NSParameterAssert(directoryURL);
@@ -53,9 +55,8 @@ typedef NS_ENUM(NSInteger, SymbolType) {
     
     // Create an opened stream from the file at the specified directory
     NSString *outputFilename = [self umbrellaHeaderFilenameWithPrefix:prefix];
-    NSOutputStream *outputStream = [self.class
-        openedOutputStreamForFilename:outputFilename
-        inDirectory:directoryURL];
+    NSOutputStream *outputStream = [NSOutputStream outputStreamToMemory];
+    [outputStream open];
     
     // Write a warning comment at the top of the file
     NSString *warningComment = [self.class
@@ -70,7 +71,10 @@ typedef NS_ENUM(NSInteger, SymbolType) {
     }
     
     [outputStream close];
-    
+
+    NSData *data = [outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+    [self.class outputData:data toFileNamed:outputFilename inDirectory:directoryURL checkForModification:checkForModification];
+
     gbprintln(@"Generated: %@", outputFilename);
 }
 
@@ -92,7 +96,7 @@ typedef NS_ENUM(NSInteger, SymbolType) {
 
 #pragma mark - Private
 
-- (void)generateSymbolsFileOfType:(FileType)fileType intoDirectoryWithURL:(NSURL *)directoryURL indentation:(NSString *)indentation prefix:(NSString *)prefix {
+- (void)generateSymbolsFileOfType:(FileType)fileType intoDirectoryWithURL:(NSURL *)directoryURL indentation:(NSString *)indentation prefix:(NSString *)prefix checkForModification:(BOOL)checkForModification {
     NSParameterAssert(directoryURL);
     NSParameterAssert(indentation);
     NSParameterAssert(prefix);
@@ -106,9 +110,7 @@ typedef NS_ENUM(NSInteger, SymbolType) {
         forFileType:fileType
         prefix:prefix];
     
-    NSOutputStream *outputStream = [self.class
-        openedOutputStreamForFilename:outputFilename
-        inDirectory:directoryURL];
+    NSOutputStream *outputStream = [NSOutputStream outputStreamToMemory];
     [outputStream open];
     
     // Write a warning comment at the top of the file
@@ -152,20 +154,33 @@ typedef NS_ENUM(NSInteger, SymbolType) {
     }
     
     [outputStream close];
-    
+
+    NSData *data = [outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+    [self.class outputData:data toFileNamed:outputFilename inDirectory:directoryURL checkForModification:checkForModification];
+
     gbprintln(@"Generated: %@", outputFilename);
 }
 
-+ (NSOutputStream *)openedOutputStreamForFilename:(NSString *)filename inDirectory:(NSURL *)directoryURL {
++ (BOOL)outputData:(NSData *)data toFileNamed:(NSString *)filename inDirectory:(NSURL *)directoryURL checkForModification:(BOOL)checkForModification {
+    NSParameterAssert(data);
     NSParameterAssert(filename);
     NSParameterAssert(directoryURL);
-    
+
     NSURL *outputFileURL = [directoryURL URLByAppendingPathComponent:filename];
-    NSOutputStream *outputStream = [NSOutputStream
-        outputStreamWithURL:outputFileURL
-        append:NO];
-    [outputStream open];
-    return outputStream;
+
+    BOOL shouldWriteData = YES;
+    if (checkForModification) {
+        NSData *existingData = [NSData dataWithContentsOfURL:outputFileURL];
+        if (existingData) {
+            shouldWriteData = ![existingData isEqualToData:data];
+        }
+    }
+
+    if (!shouldWriteData) {
+        return YES; // Counting this case as success
+    }
+
+    return [data writeToURL:outputFileURL atomically:NO];
 }
 
 static NSString * const NamePrefix = @"Theme";

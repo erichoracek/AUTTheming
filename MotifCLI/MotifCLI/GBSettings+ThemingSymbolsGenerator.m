@@ -15,6 +15,7 @@ NSString * const MTFSettingsOptionTabs = @"tabs";
 NSString * const MTFSettingsOptionIndentationCount = @"indentation-count";
 NSString * const MTFSettingsOptionHelp = @"help";
 NSString * const MTFSettingsOptionVerbose = @"verbose";
+NSString * const MTFSettingsOptionModification = @"keep";
 
 @implementation GBSettings (MTFThemingSymbolsGenerator)
 
@@ -31,6 +32,7 @@ NSString * const MTFSettingsOptionVerbose = @"verbose";
     self.mtf_prefix = @"";
     self.mtf_shouldIndentUsingTabs = NO;
     self.mtf_indentationCount = 4;
+    self.mtf_checkForModification = NO;
 }
 
 GB_SYNTHESIZE_OBJECT(NSArray *, mtf_themes, mtf_setThemes, MTFSettingsOptionThemes)
@@ -40,6 +42,7 @@ GB_SYNTHESIZE_BOOL(mtf_shouldIndentUsingTabs, mtf_setShouldIndentUsingTabs, MTFS
 GB_SYNTHESIZE_INT(mtf_indentationCount, mtf_setIndentationCount, MTFSettingsOptionIndentationCount)
 GB_SYNTHESIZE_BOOL(mtf_help, mtf_setHelp, MTFSettingsOptionHelp)
 GB_SYNTHESIZE_BOOL(mtf_verbose, mtf_setVerbose, MTFSettingsOptionVerbose)
+GB_SYNTHESIZE_BOOL(mtf_checkForModification, mtf_setCheckForModification, MTFSettingsOptionModification)
 
 #pragma mark - Derived Properties
 

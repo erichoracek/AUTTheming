@@ -46,6 +46,12 @@
         long:MTFSettingsOptionVerbose
         description:@"Print output verbosely when executing."
         flags:GBOptionNoValue];
+
+    [self registerOption:'k'
+        long:MTFSettingsOptionModification
+        description:@"Don't touch files which haven't changed."
+        flags:GBOptionNoValue];
+
 }
 
 @end

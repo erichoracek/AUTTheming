@@ -503,7 +503,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/usr/local/bin\"\nexport CLI_TOOL='motif'\n\nwhich \"${CLI_TOOL}\"\n\nif [ $? -ne 0  ]; then exit 0; fi\n\nexport THEMES_DIR=\"${SRCROOT}/DynamicThemingExample/Themes\"\nexport OUTPUT_DIR=\"${SRCROOT}/DynamicThemingExample/ThemeSymbols\"\n\nfind \"${THEMES_DIR}\" -name '*Theme.json' | rm\nfind \"${THEMES_DIR}\" -name '*Theme.json' |  sed 's/^/-t /' | xargs \"${CLI_TOOL}\" -o \"${OUTPUT_DIR}\"";
+			shellScript = "export PATH=\"$PATH:/usr/local/bin\"\nexport CLI_TOOL='motif'\n\nwhich \"${CLI_TOOL}\"\n\nif [ $? -ne 0  ]; then exit 0; fi\n\nexport THEMES_DIR=\"${SRCROOT}/DynamicThemingExample/Themes\"\nexport OUTPUT_DIR=\"${SRCROOT}/DynamicThemingExample/ThemeSymbols\"\n\nfind \"${THEMES_DIR}\" -name '*Theme.json' | rm\nfind \"${THEMES_DIR}\" -name '*Theme.json' |  sed 's/^/-t /' | xargs \"${CLI_TOOL}\" -k -o \"${OUTPUT_DIR}\"";
 			showEnvVarsInLog = 0;
 		};
 		4C45BAE8C74767A37A925E3E /* Check Pods Manifest.lock */ = {

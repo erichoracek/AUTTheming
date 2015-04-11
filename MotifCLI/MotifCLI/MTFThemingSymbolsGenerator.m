@@ -63,7 +63,8 @@
         [theme
             generateSymbolsFilesInDirectory:outputDirectoryURL
             indentation:settings.mtf_indentation
-            prefix:settings.mtf_prefix];
+            prefix:settings.mtf_prefix
+            checkForModification:settings.mtf_checkForModification];
     }
     
     // If there is more than one theme, generate an umbrella header to enable
@@ -72,7 +73,8 @@
         [MTFTheme
             generateSymbolsUmbrellaHeaderFromThemes:themes
             inDirectory:outputDirectoryURL
-            prefix:settings.mtf_prefix];
+            prefix:settings.mtf_prefix
+            checkForModification:settings.mtf_checkForModification];
     }
     
     return 0;

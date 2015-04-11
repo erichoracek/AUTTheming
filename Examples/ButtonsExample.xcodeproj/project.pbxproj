@@ -225,7 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/sh -x";
-			shellScript = "export PATH=\"$PATH:/usr/local/bin\"\nexport CLI_TOOL='motif'\n\nwhich \"${CLI_TOOL}\"\n\nif [ $? -ne 0  ]; then exit 0; fi\n\nexport THEMES_DIR=\"${SRCROOT}/${PRODUCT_NAME}\"\n\nfind \"${THEMES_DIR}\" -name '*Theme.json' |  sed 's/^/-t /' | xargs \"${CLI_TOOL}\" -o \"${THEMES_DIR}\"";
+			shellScript = "export PATH=\"$PATH:/usr/local/bin\"\nexport CLI_TOOL='motif'\n\nwhich \"${CLI_TOOL}\"\n\nif [ $? -ne 0  ]; then exit 0; fi\n\nexport THEMES_DIR=\"${SRCROOT}/${PRODUCT_NAME}\"\n\nfind \"${THEMES_DIR}\" -name '*Theme.json' |  sed 's/^/-t /' | xargs \"${CLI_TOOL}\" -k -o \"${THEMES_DIR}\"";
 			showEnvVarsInLog = 0;
 		};
 		73C0CA75FBABAB354BAB437B /* Check Pods Manifest.lock */ = {
