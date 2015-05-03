@@ -21,7 +21,7 @@ You have an app. Maybe even a family of apps. You know about CSS, which enables 
 
 To style your app today, maybe you have a `MyAppStyle` singleton that vends styled interface components that's a dependency of nearly every view controller in your app. Maybe you use Apple's `UIAppearance` APIs, but you're limited to a frustratingly small subset of the appearance APIs. Maybe you've started to subclass some UIKit classes just to set a few defaults to create some styled components. You know this sucks, but there just isn't a better way to do things in iOS.
 
-Well, things about about to change. Take a look at the example below to see what `Motif` can do for you:
+Well, things are about to change. Take a look at the example below to see what `Motif` can do for you:
 
 ## An example
 
@@ -165,7 +165,7 @@ Previously, we created a style applier on `UILabel` that allows us specify a cus
 ```objective-c
 NSError *error;
 MTFTheme *theme = [MTFTheme themeFromJSONThemeNamed:@"Theme" error:&error];
-NSAssert(error != nil, @"Error loading theme %@", error);
+NSAssert(!error, @"Error loading theme %@", error);
 
 [theme applyClassWithName:@"Button" toObject:saveButton];
 [theme applyClassWithName:@"WarningButton" toObject:deleteButton];
@@ -276,7 +276,7 @@ MTFTheme *lightTheme = *theme = [MTFTheme
         @"LightMappings",
         @"Buttons"
     ] error:nil];
-    
+
 MTFTheme *darkTheme = *theme = [MTFTheme
     themeFromJSONThemesNamed:@[
         @"Colors",
