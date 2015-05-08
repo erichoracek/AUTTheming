@@ -61,7 +61,7 @@ static NSString * const JSONExtension = @"json";
         
         // If a theme with the exact name is not found, try appending 'Theme'
         // to the end of the filename
-        if (!fileURL) {
+        if (fileURL == nil) {
             NSString *themeNameWithThemeAppended = [themeName
                 stringByAppendingString:ThemeNameOptionalSuffix];
             
@@ -71,16 +71,19 @@ static NSString * const JSONExtension = @"json";
         }
         
         // If no file is found, throw an exception
-        __unused NSArray *suggestedURLs = [bundle
-            URLsForResourcesWithExtension:JSONExtension
-           subdirectory:nil];
-        NSAssert(
-            fileURLs,
-            @"No theme was found with the name '%@' in the bundle %@. Perhaps "
-                "you meant one of the following: %@",
-            themeName,
-            bundle,
-            suggestedURLs);
+        if (fileURL == nil) {
+            NSArray *suggestedURLs = [bundle
+                                      URLsForResourcesWithExtension:JSONExtension
+                                      subdirectory:nil];
+            NSAssert(
+                     NO,
+                     @"No theme was found with the name '%@' in the bundle %@. Perhaps "
+                     "you meant one of the following: %@",
+                     themeName,
+                     bundle,
+                     suggestedURLs);
+        }
+        
         [fileURLs addObject:fileURL];
     }
     return [fileURLs copy];
