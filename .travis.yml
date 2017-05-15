@@ -1,15 +1,8 @@
 language: objective-c
-
 osx_image: xcode8
-
-# CocoaPods requires ruby 2.0 and above
-rvm: 2.0.0
-
 env:
-    global: LANG=en_US.UTF-8
-
+  global: LANG=en_US.UTF-8
 install:
-    - bundle install --jobs=3
-
+- bundle install --jobs=3
 script:
-    - rake ci
+- rake ci

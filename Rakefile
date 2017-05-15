@@ -82,7 +82,7 @@ BUILD_FLAGS_IOS =
     "-destination 'platform=iOS Simulator,OS=latest,name=iPhone 6' "\
     "-destination 'platform=iOS Simulator,OS=latest,name=iPhone 5' "\
     "ONLY_ACTIVE_ARCH=YES "\
-    "CODE_SIGNING_REQUIRED=NO " + BUILD_FLAGS
+    "CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= " + BUILD_FLAGS
 
 BUILD_FLAGS_TEST_IOS = "test -scheme '#{LIBRARY_NAME}-iOS' " + BUILD_FLAGS_IOS
 BUILD_FLAGS_TEST_OSX = "test -scheme '#{LIBRARY_NAME}-OSX' " + BUILD_FLAGS
@@ -92,10 +92,10 @@ BUILD_FLAGS_SWIFT_BUTTONS_EXAMPLE = "build -scheme '#{SCHEME_SWIFT_BUTTONS_EXAMP
 BUILD_FLAGS_DYNAMIC_THEMES_EXAMPLE = "build -scheme '#{SCHEME_DYNAMIC_THEMING_EXAMPLE}' " + BUILD_FLAGS_IOS
 BUILD_FLAGS_SCREEN_BRIGHTNESS_EXAMPLE = "build -scheme '#{SCHEME_SCREEN_BRIGHTNESS_THEMING_EXAMPLE}' " + BUILD_FLAGS_IOS
 
-PRETTIFY = "xcpretty --color; exit ${PIPESTATUS[0]}"
+PRETTIFY = "bundle exec xcpretty --color; exit ${PIPESTATUS[0]}"
 
 # CocoaPods
 
 PODSPEC_PATH = "#{LIBRARY_NAME}.podspec"
 POD_LINT_TOOL = 'bundle exec pod lib lint'
-POD_LINT_FLAGS = "#{PODSPEC_PATH}"
+POD_LINT_FLAGS = "#{PODSPEC_PATH} --allow-warnings"
