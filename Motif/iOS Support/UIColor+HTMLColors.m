@@ -428,12 +428,12 @@ static NSUInteger MTFParseHex(NSString *str, BOOL repeated)
 // percentage.
 - (BOOL)mtf_scanNum:(CGFloat *)value scale:(CGFloat)scale
 {
-    CGFloat f = 0.0;
-    if ([self scanDouble:&f]) {
+    float f = 0.0;
+    if ([self scanFloat:&f]) {
         if ([self scanString:@"%" intoString:NULL]) {
-            f *= 0.01;
+            f *= 0.01f;
         } else {
-            f *= scale;
+            f *= (float)scale;
         }
         if (value) {
             *value = f;
@@ -497,7 +497,7 @@ static inline MTFFloatTriple HSB2HSL(CGFloat hue, CGFloat saturation, CGFloat br
     if (satDiv != 0.0) {
         saturation /= satDiv;
     }
-    l *= 0.5;
+    l *= 0.5f;
     MTFFloatTriple hsl = {
         hue,
         saturation,
