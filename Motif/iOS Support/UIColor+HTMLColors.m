@@ -428,8 +428,8 @@ static NSUInteger MTFParseHex(NSString *str, BOOL repeated)
 // percentage.
 - (BOOL)mtf_scanNum:(CGFloat *)value scale:(CGFloat)scale
 {
-    float f = 0.0;
-    if ([self scanFloat:&f]) {
+    CGFloat f = 0.0;
+    if ([self scanDouble:&f]) {
         if ([self scanString:@"%" intoString:NULL]) {
             f *= 0.01;
         } else {
